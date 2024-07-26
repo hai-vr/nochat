@@ -1,12 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
+using NochatScript.Core;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon.Common;
 using VRC.Udon.Common.Enums;
+using Object = UnityEngine.Object;
 
 // FIXME: Unsure if namespace needs to be the same to avoid breaking prefabs
 namespace VRC.Udon
@@ -47,35 +50,66 @@ namespace VRC.Udon
         public void SendCustomEvent(string eventName)
         {
             Debug.Log($"{name} is trying to send custom event {eventName}");
-            SelfTriggerEvent(eventName); // FIXME: Stub, implement delay
+            try
+            {
+                SelfTriggerEvent(eventName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public void SendCustomEventDelayedSeconds(string eventName, float delaySeconds)
         {
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {delaySeconds} seconds");
-            StartCoroutine(DelayTime(eventName, delaySeconds));
+            TryStartCoroutine(DelayTime(eventName, delaySeconds));
         }
 
         public void SendCustomEventDelayedSeconds(string eventName, float delaySeconds, EventTiming timing)
         {
             // TODO Stub: Timing is not used, we need to run this in LateUpdate if Event timing is late update
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {delaySeconds} seconds");
-            StartCoroutine(DelayTime(eventName, delaySeconds));
+            TryStartCoroutine(DelayTime(eventName, delaySeconds));
         }
         
         public void SendCustomEventDelayedFrames(string eventName, int frameCount)
         {
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {frameCount} frames");
-            StartCoroutine(DelayFrames(eventName, frameCount));
+            TryStartCoroutine(DelayFrames(eventName, frameCount));
         }
         
         public void SendCustomEventDelayedFrames(string eventName, int frameCount, EventTiming timing)
         {
             // TODO Stub: Timing is not used, we need to run this in LateUpdate if Event timing is late update
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {frameCount} frames");
-            StartCoroutine(DelayFrames(eventName, frameCount));
+            TryStartCoroutine(DelayFrames(eventName, frameCount));
         }
-        
+
+        private void TryStartCoroutine(IEnumerator enumerator)
+        {
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(enumerator);
+            }
+            else
+            {
+                Debug.Log("Can't start coroutine on disabled object. Creating temporary behaviour...");
+                var runner = new GameObject
+                {
+                    name = "CoroutineRunner"
+                }.AddComponent<NochatCoroutineRunner>();
+                runner.StartCoroutine(Runner(runner));
+            }
+        }
+
+        private IEnumerator Runner(NochatCoroutineRunner runner)
+        {
+            yield return runner;
+            Debug.Log("Temporary runner complete, destroying self...");
+            Object.Destroy(runner.gameObject);
+        }
+
         private IEnumerator DelayTime(string eventName, float delaySeconds)
         {    
             yield return new WaitForSeconds(delaySeconds);
