@@ -12,8 +12,8 @@ namespace NochatScript.Core
         public Transform rightController;
         public NochatController leftState;
         public NochatController rightState;
-        private Collider[] _leftOverlaps;
-        private Collider[] _rightOverlaps;
+        private Collider[] _leftOverlaps = Array.Empty<Collider>();
+        private Collider[] _rightOverlaps = Array.Empty<Collider>();
         
         private readonly Collider[] _workColliders_Capacity = new Collider[50];
 
