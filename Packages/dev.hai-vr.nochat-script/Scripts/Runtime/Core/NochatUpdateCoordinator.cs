@@ -22,6 +22,16 @@ namespace NochatScript.Core
             leftState.DoUpdate();
             rightState.DoUpdate();
 
+            NochatInput.LeftTrigger = leftState.TriggerAnalog;
+            NochatInput.LeftGrip = leftState.GripAnalog;
+            NochatInput.LeftAxisX = leftState.Thumbstick.x;
+            NochatInput.LeftAxisY = leftState.Thumbstick.y;
+            
+            NochatInput.RightTrigger = rightState.TriggerAnalog;
+            NochatInput.RightGrip = rightState.GripAnalog;
+            NochatInput.RightAxisX = rightState.Thumbstick.x;
+            NochatInput.RightAxisY = rightState.Thumbstick.y;
+
             VRCPlayerApi.Nochat_ProvideForTrackingData(viewpointRepresentation, leftController, rightController);
             
             ExecutePickupActionsFor(rightController, rightState, ref _rightOverlaps);

@@ -17,6 +17,10 @@ namespace NochatScript.Core
         public bool GripJustPressed { get; private set; }
         public bool GripJustReleased { get; private set; }
 
+        public float TriggerAnalog { get; private set; }
+        public float GripAnalog { get; private set; }
+        public Vector2 Thumbstick { get; private set; }
+
         private void Awake()
         {
             _hand = new List<InputDevice>();
@@ -59,6 +63,9 @@ namespace NochatScript.Core
         {
             var newTrigger = IsDown(CommonUsages.triggerButton, _hand);
             var newGrip = IsDown(CommonUsages.gripButton, _hand);
+            TriggerAnalog = Analog(CommonUsages.trigger, _hand);
+            GripAnalog = Analog(CommonUsages.grip, _hand);
+            Thumbstick = Joystick(CommonUsages.primary2DAxis, _hand);
             
             if (newTrigger != TriggerDown)
             {
@@ -93,6 +100,28 @@ namespace NochatScript.Core
             }
 
             return false;
+        }
+
+        private float Analog(InputFeatureUsage<float> feature, List<InputDevice> hand)
+        {
+            foreach (var device in hand)
+            {
+                var result = device.TryGetFeatureValue(feature, out var floatValue);
+                if (result) return floatValue;
+            }
+
+            return 0f;
+        }
+
+        private Vector2 Joystick(InputFeatureUsage<Vector2> feature, List<InputDevice> hand)
+        {
+            foreach (var device in hand)
+            {
+                var result = device.TryGetFeatureValue(feature, out var vectorValue);
+                if (result) return vectorValue;
+            }
+
+            return Vector2.zero;
         }
     }
 }
