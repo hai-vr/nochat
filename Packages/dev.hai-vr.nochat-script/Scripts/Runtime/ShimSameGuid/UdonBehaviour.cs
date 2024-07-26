@@ -28,7 +28,27 @@ namespace VRC.Udon
         public object GetProgramVariable(string programVariableName)
         {
             // TODO: Handle invalid var names
-            if (!_fieldCache.ContainsKey(programVariableName)) _fieldCache[programVariableName] = GetType().GetField(programVariableName);
+            if (!_fieldCache.ContainsKey(programVariableName))
+            {
+                var field = GetType().GetField(programVariableName);
+                if (field == null)
+                {
+                    var field2 = GetType().GetField(programVariableName, BindingFlags.Instance | BindingFlags.NonPublic);
+                    if (field2 == null)
+                    {
+                        Debug.LogError($"Failed to fetch field for program variable {programVariableName}, this may indicate an issue");
+                        return null;
+                    }
+                    else
+                    {
+                        _fieldCache[programVariableName] = field2;
+                    }
+                }
+                else
+                {
+                    _fieldCache[programVariableName] = field;
+                }
+            }
             return _fieldCache[programVariableName].GetValue(this);
         }
 
