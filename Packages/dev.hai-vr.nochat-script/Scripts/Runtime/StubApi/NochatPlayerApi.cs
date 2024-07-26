@@ -30,6 +30,7 @@ namespace VRC.SDKBase
         private static TrackingData _headTrackingData;
         private static TrackingData _leftTrackingData;
         private static TrackingData _rightTrackingData;
+        private Vector3 _velocity = Vector3.zero;
 
         public static VRCPlayerApi GetPlayerById(int allowedPlayer)
         {
@@ -147,7 +148,7 @@ namespace VRC.SDKBase
 
         public void SetVelocity(Vector3 velocity)
         {
-            // TODO Stub
+            _velocity = velocity;
         }
 
         public void SetVoiceDistanceNear(float f)
@@ -173,8 +174,7 @@ namespace VRC.SDKBase
 
         public Vector3 GetVelocity()
         {
-            // TODO stub
-            return Vector3.zero;
+            return _velocity;
         }
     }
 }
