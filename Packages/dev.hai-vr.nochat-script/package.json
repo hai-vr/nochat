@@ -1,0 +1,18 @@
+{
+  "name": "dev.hai-vr.nochat-script",
+  "displayName": "Haï ~ Nochat",
+  "version": "0.0.0",
+  "unity": "2019.4",
+  "description": "Nochat",
+  "vrchatVersion" : "2022.1.1",
+  "author" : {
+    "name" : "Haï~"
+  },
+  "vpmDependencies": {
+    "dev.hai-vr.resilience.toolkit" : "1.0.x"
+  },
+  "url" : "https://docs.hai-vr.dev/docs/products/nochat-script",
+  "documentationUrl": "https://docs.hai-vr.dev/docs/products/nochat-script",
+  "changelogUrl": "https://docs.hai-vr.dev/docs/changelogs/nochat-script",
+  "license": "NOT DEFINED, CHANGE ME"
+}

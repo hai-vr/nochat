@@ -1,0 +1,26 @@
+{
+    "name": "NochatScript.Editor",
+    "references": [
+        "Unity.XR.Management",
+        "UnityEngine.SpatialTracking",
+        "Unity.XR.OpenXR",
+        "NochatScript.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.xr.openxr",
+            "expression": "",
+            "define": "LETMESEE_OPENXR_EXISTS"
+        }
+    ],
+    "noEngineReferences": false
+}
