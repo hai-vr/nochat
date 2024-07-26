@@ -85,30 +85,30 @@ namespace VRC.Udon
         public void SendCustomEventDelayedSeconds(string eventName, float delaySeconds)
         {
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {delaySeconds} seconds");
-            TryStartCoroutine(DelayTime(eventName, delaySeconds));
+            TryStartCoroutine(DelayTime(eventName, delaySeconds), eventName);
         }
 
         public void SendCustomEventDelayedSeconds(string eventName, float delaySeconds, EventTiming timing)
         {
             // TODO Stub: Timing is not used, we need to run this in LateUpdate if Event timing is late update
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {delaySeconds} seconds");
-            TryStartCoroutine(DelayTime(eventName, delaySeconds));
+            TryStartCoroutine(DelayTime(eventName, delaySeconds), eventName);
         }
         
         public void SendCustomEventDelayedFrames(string eventName, int frameCount)
         {
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {frameCount} frames");
-            TryStartCoroutine(DelayFrames(eventName, frameCount));
+            TryStartCoroutine(DelayFrames(eventName, frameCount), eventName);
         }
         
         public void SendCustomEventDelayedFrames(string eventName, int frameCount, EventTiming timing)
         {
             // TODO Stub: Timing is not used, we need to run this in LateUpdate if Event timing is late update
             Debug.Log($"{name} is trying to send custom event {eventName}, delayed by {frameCount} frames");
-            TryStartCoroutine(DelayFrames(eventName, frameCount));
+            TryStartCoroutine(DelayFrames(eventName, frameCount), eventName);
         }
 
-        private void TryStartCoroutine(IEnumerator enumerator)
+        private void TryStartCoroutine(IEnumerator enumerator, string eventName)
         {
             if (gameObject.activeInHierarchy)
             {
@@ -116,19 +116,19 @@ namespace VRC.Udon
             }
             else
             {
-                Debug.Log("Can't start coroutine on disabled object. Creating temporary behaviour...");
+                Debug.Log($"Can't start coroutine on disabled object for event {eventName}. Creating temporary behaviour...");
                 var runner = new GameObject
                 {
                     name = "CoroutineRunner"
                 }.AddComponent<NochatCoroutineRunner>();
-                runner.StartCoroutine(Runner(runner));
+                runner.StartCoroutine(Runner(runner, enumerator, eventName));
             }
         }
 
-        private IEnumerator Runner(NochatCoroutineRunner runner)
+        private IEnumerator Runner(NochatCoroutineRunner runner, IEnumerator enumerator, string eventName)
         {
-            yield return runner;
-            Debug.Log("Temporary runner complete, destroying self...");
+            yield return enumerator;
+            Debug.Log($"Temporary runner complete for {eventName}, destroying self...");
             Object.Destroy(runner.gameObject);
         }
 
