@@ -59,8 +59,8 @@ namespace VRC.Udon
 
         public void SetProgramVariable(string programVariableName, object value)
         {
-            Debug.Log($"Setting program variable {programVariableName} to {value}");
-            var field = GetType().GetField(programVariableName);
+            Debug.Log($"Setting program variable {programVariableName} to {value} in {GetType().Name}");
+            var field = GetType().GetField(programVariableName) ?? GetType().GetField(programVariableName, BindingFlags.Instance | BindingFlags.NonPublic);
             if (field != null)
             {
                 field.SetValue(this, value);
@@ -76,6 +76,8 @@ namespace VRC.Udon
             }
             catch (Exception e)
             {
+                Debug.LogError($"An exception has occured during SendCustomEvent: {e.Message}");
+                Debug.LogException(e);
                 Console.WriteLine(e);
             }
         }
@@ -180,6 +182,17 @@ namespace VRC.Udon
 
         public void SendCustomNetworkEvent(object whatever, string eventName)
         {
+            Debug.Log($"{name} is trying to send custom NETWORKED event {eventName}");
+            try
+            {
+                SelfTriggerEvent(eventName);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"An exception has occured during SendCustomNetworkEvent: {e.Message}");
+                Debug.LogException(e);
+                Console.WriteLine(e);
+            }
             // TODO: Stub
         }
 
