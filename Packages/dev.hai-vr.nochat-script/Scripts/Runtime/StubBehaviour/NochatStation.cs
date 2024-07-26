@@ -1,23 +1,21 @@
-﻿using JetBrains.Annotations;
+﻿using UdonSharp;
 using UnityEngine;
-using NochatPlayerApi = VRC.SDKBase.VRCPlayerApi;
+using VRC.SDKBase;
 
-namespace VRC.SDKBase
+namespace VRC.SDK3.Components
 {
-    public class VRCStation : MonoBehaviour
+    [AddComponentMenu("Nochat/Nochat3 Station")]
+    public class VRCStation : VRC.SDKBase.VRCStation
     {
-        [PublicAPI] public Transform stationEnterPlayerLocation;
+        public bool Nochat_EnterThisStation;
 
-        public void ExitStation(NochatPlayerApi localPlayer)
+        private void Update()
         {
-            // TODO Stub
+            if (Nochat_EnterThisStation)
+            {
+                Nochat_EnterThisStation = false;
+                gameObject.GetComponent<UdonSharpBehaviour>().OnStationEntered(Networking.LocalPlayer);
+            }
         }
-    }
-}
-
-namespace VRC.SDK3.Components // FIXME: ??????
-{
-    public class VRCStation : VRC.SDKBase.VRCStation // FIXME: ?????? in SaccFlight, see SaacVehicleSeat at line 71
-    {
     }
 }
