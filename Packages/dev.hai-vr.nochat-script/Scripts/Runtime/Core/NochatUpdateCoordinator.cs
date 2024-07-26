@@ -14,6 +14,8 @@ namespace NochatScript.Core
         public NochatController rightState;
         private Collider[] _leftOverlaps;
         private Collider[] _rightOverlaps;
+        
+        private readonly Collider[] _workColliders_Capacity = new Collider[50];
 
         private void Update()
         {
@@ -83,14 +85,15 @@ namespace NochatScript.Core
         private Collider[] FindPickupsNear(Vector3 referencePos)
         {
             var grabRadiusCheck = 0.2f;
-            var candidates = Physics.OverlapSphere(referencePos, grabRadiusCheck);
-            if (candidates.Length > 0)
+            
+            var workColliders_ActualCount = Physics.OverlapSphereNonAlloc(referencePos, grabRadiusCheck, _workColliders_Capacity);
+            if (workColliders_ActualCount > 0)
             {
                 var closestDistance = float.MaxValue;
                 var indexOfClosest = -1;
-                for (var index = 0; index < candidates.Length; index++)
+                for (var index = 0; index < workColliders_ActualCount; index++)
                 {
-                    var candidate = candidates[index];
+                    var candidate = _workColliders_Capacity[index];
                     
                     var pickup = candidate.GetComponent<VRC_Pickup>();
                     if (pickup == null) continue;
@@ -107,7 +110,7 @@ namespace NochatScript.Core
 
                 if (indexOfClosest != -1)
                 {
-                    return new[] { candidates[indexOfClosest] };
+                    return new[] { _workColliders_Capacity[indexOfClosest] };
                 }
             }
 
