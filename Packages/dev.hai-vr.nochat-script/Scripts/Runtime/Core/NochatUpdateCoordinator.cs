@@ -7,6 +7,7 @@ namespace NochatScript.Core
 {
     public class NochatUpdateCoordinator : MonoBehaviour
     {
+        public Transform viewpointRepresentation;
         public Transform leftController;
         public Transform rightController;
         public NochatController leftState;
@@ -19,6 +20,8 @@ namespace NochatScript.Core
             leftState.DoUpdate();
             rightState.DoUpdate();
 
+            VRCPlayerApi.Nochat_ProvideForTrackingData(viewpointRepresentation, leftController, rightController);
+            
             ExecutePickupActionsFor(rightController, rightState, ref _rightOverlaps);
             ExecutePickupActionsFor(leftController, leftState, ref _leftOverlaps);
         }

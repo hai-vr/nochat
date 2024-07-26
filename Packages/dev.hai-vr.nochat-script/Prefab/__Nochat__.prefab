@@ -342,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bcb42cd70a4e19b96841961da08797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewpointRepresentation: {fileID: 1107880145611412339}
   leftController: {fileID: 7326837237516365609}
   rightController: {fileID: 1626058988788070430}
   leftState: {fileID: 3174809808725359195}

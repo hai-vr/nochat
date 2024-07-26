@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -26,6 +27,9 @@ namespace VRC.SDKBase
         public bool isMaster { get => _isMaster; }
 
         private readonly Dictionary<string, string> _tags = new Dictionary<string, string>();
+        private static TrackingData _headTrackingData;
+        private static TrackingData _leftTrackingData;
+        private static TrackingData _rightTrackingData;
 
         public static VRCPlayerApi GetPlayerById(int allowedPlayer)
         {
@@ -36,7 +40,7 @@ namespace VRC.SDKBase
         public Vector3 GetPosition()
         {
             // TODO: Stub
-            return Vector3.zero;
+            return _headTrackingData.position;
         }
 
         public static VRCPlayerApi[] GetPlayers(VRCPlayerApi[] targetArray)
@@ -57,7 +61,7 @@ namespace VRC.SDKBase
             return true;
         }
 
-        public class TrackingData
+        public struct TrackingData
         {
             public TrackingData(Vector3 position, Quaternion rotation)
             {
@@ -70,12 +74,28 @@ namespace VRC.SDKBase
             [PublicAPI] public Quaternion rotation { get; private set; }
             // ReSharper restore InconsistentNaming
         }
+        
+        public static void Nochat_ProvideForTrackingData(Transform viewpointRepresentation, Transform leftController, Transform rightController)
+        {
+            // TODO: Stub
+            _headTrackingData = new TrackingData(viewpointRepresentation.position, viewpointRepresentation.rotation);
+            _leftTrackingData = new TrackingData(leftController.position, leftController.rotation);
+            _rightTrackingData = new TrackingData(rightController.position, rightController.rotation);
+        }
 
         public TrackingData GetTrackingData(TrackingDataType which)
         {
-            // FIXME: MEGA STUB
-            var tr = Camera.main.transform;
-            return new TrackingData(tr.position, tr.rotation);
+            switch (which)
+            {
+                case TrackingDataType.Head:
+                    return _headTrackingData;
+                case TrackingDataType.LeftHand:
+                    return _leftTrackingData;
+                case TrackingDataType.RightHand:
+                    return _rightTrackingData;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(which), which, null);
+            }
         }
 
         public enum TrackingDataType
