@@ -1,5 +1,7 @@
 ﻿using System;
+using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 
 namespace NochatScript.Core
 {
@@ -31,8 +33,8 @@ namespace NochatScript.Core
 
                 foreach (var overlap in overlaps)
                 {
-                    overlap.GetComponent<NochatPickup>().Core_SetIsHeldByLocalPlayer(true);
-                    overlap.GetComponent<NochatBehaviour>().OnPickup(); // FIXME: Trigger this on all behaviours
+                    overlap.GetComponent<VRC_Pickup>().Core_SetIsHeldByLocalPlayer(true);
+                    overlap.GetComponent<UdonSharpBehaviour>().OnPickup(); // FIXME: Trigger this on all behaviours
                 }
             }
 
@@ -40,8 +42,8 @@ namespace NochatScript.Core
             {
                 foreach (var overlap in overlaps)
                 {
-                    overlap.GetComponent<NochatPickup>().Core_SetIsHeldByLocalPlayer(false);
-                    overlap.GetComponent<NochatBehaviour>().OnDrop(); // FIXME: Trigger this on all behaviours
+                    overlap.GetComponent<VRC_Pickup>().Core_SetIsHeldByLocalPlayer(false);
+                    overlap.GetComponent<UdonSharpBehaviour>().OnDrop(); // FIXME: Trigger this on all behaviours
                 }
 
                 overlaps = Array.Empty<Collider>();
@@ -62,7 +64,7 @@ namespace NochatScript.Core
             {
                 foreach (var overlap in overlaps)
                 {
-                    overlap.GetComponent<NochatBehaviour>().OnPickupUseDown(); // FIXME: Trigger this on all behaviours
+                    overlap.GetComponent<UdonSharpBehaviour>().OnPickupUseDown(); // FIXME: Trigger this on all behaviours
                 }
             }
 
@@ -70,7 +72,7 @@ namespace NochatScript.Core
             {
                 foreach (var overlap in overlaps)
                 {
-                    overlap.GetComponent<NochatBehaviour>().OnPickupUseUp(); // FIXME: Trigger this on all behaviours
+                    overlap.GetComponent<UdonSharpBehaviour>().OnPickupUseUp(); // FIXME: Trigger this on all behaviours
                 }
             }
         }
@@ -87,7 +89,7 @@ namespace NochatScript.Core
                 {
                     var candidate = candidates[index];
                     
-                    var pickup = candidate.GetComponent<NochatPickup>();
+                    var pickup = candidate.GetComponent<VRC_Pickup>();
                     if (pickup == null) continue;
                     if (pickup.CoreIsHeld) continue;
                     if (!pickup.pickupable) continue;

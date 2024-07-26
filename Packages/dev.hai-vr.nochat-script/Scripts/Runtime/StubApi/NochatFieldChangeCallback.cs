@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace NochatScript
+namespace UdonSharp
 {
     // FIXME: Callbacks are never invoked
-    public class NochatFieldChangeCallback : Attribute
+    public class FieldChangeCallback : Attribute
     {
-        public NochatFieldChangeCallback(string name)
+        public FieldChangeCallback(string name)
         {
             // TODO: Stub
         }

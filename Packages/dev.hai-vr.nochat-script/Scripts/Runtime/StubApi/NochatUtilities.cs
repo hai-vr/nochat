@@ -1,6 +1,6 @@
-﻿namespace NochatScript
+﻿namespace VRC.SDKBase
 {
-    public class NochatUtilities
+    public class Utilities
     {
         public static bool IsValid<T>(T obj)
         {

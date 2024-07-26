@@ -1,9 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
-namespace NochatScript
+namespace VRC.SDKBase
 {
-    public class NochatPlayerApi
+    public class VRCPlayerApi
     {
         private bool _inVR = true;
         public bool IsUserInVR()
@@ -20,11 +21,16 @@ namespace NochatScript
         
         private bool _isLocal = true;
         public bool isLocal { get => _isLocal; }
+        
+        private bool _isMaster = true;
+        public bool isMaster { get => _isMaster; }
 
-        public static NochatPlayerApi GetPlayerById(int allowedPlayer)
+        private readonly Dictionary<string, string> _tags = new Dictionary<string, string>();
+
+        public static VRCPlayerApi GetPlayerById(int allowedPlayer)
         {
             // TODO: Stub
-            return new NochatPlayerApi();
+            return new VRCPlayerApi();
         }
 
         public Vector3 GetPosition()
@@ -33,7 +39,7 @@ namespace NochatScript
             return Vector3.zero;
         }
 
-        public static NochatPlayerApi[] GetPlayers(NochatPlayerApi[] targetArray)
+        public static VRCPlayerApi[] GetPlayers(VRCPlayerApi[] targetArray)
         {
             // TODO: Stub
             return targetArray;
@@ -87,13 +93,68 @@ namespace NochatScript
 
         public Vector3 GetBonePosition(HumanBodyBones bone)
         {
-            // TODO STUB
-            return Vector3.zero;
+            // FIXME: MEGA STUB
+            return Camera.main.transform.position;
+        }
+
+        public Quaternion GetBoneRotation(HumanBodyBones bone)
+        {
+            // FIXME: MEGA STUB
+            return Camera.main.transform.rotation;
         }
 
         public void PlayHapticEventInHand(object hand, float p1, float p2, float p3)
         {
             // TODO: Stub
+        }
+
+        public void SetPlayerTag(string key, string value)
+        {
+            _tags[key] = value;
+        }
+
+        public string GetPlayerTag(string key)
+        {
+            if (_tags.TryGetValue(key, out var tag)) return tag;
+
+            return ""; // FIXME: Stub, is this correct?
+        }
+
+        public void UseAttachedStation()
+        {
+            // TODO Stub
+        }
+
+        public void SetVelocity(Vector3 velocity)
+        {
+            // TODO Stub
+        }
+
+        public void SetVoiceDistanceNear(float f)
+        {
+            // TODO Stub
+        }
+
+        public void SetVoiceDistanceFar(float f)
+        {
+            // TODO Stub
+        }
+
+        public void SetVoiceGain(float f)
+        {
+            // TODO Stub
+        }
+
+        public bool IsPlayerGrounded()
+        {
+            // TODO Stub
+            return true;
+        }
+
+        public Vector3 GetVelocity()
+        {
+            // TODO stub
+            return Vector3.zero;
         }
     }
 }

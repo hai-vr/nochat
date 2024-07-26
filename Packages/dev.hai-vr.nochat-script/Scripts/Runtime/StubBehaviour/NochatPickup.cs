@@ -1,14 +1,15 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 
-namespace NochatScript
+namespace VRC.SDKBase
 {
     // TODO Stub
-    public class NochatPickup : MonoBehaviour
+    public class VRC_Pickup : MonoBehaviour
     {
         // ReSharper disable InconsistentNaming
         [PublicAPI] public bool pickupable { get; set; }
-        [PublicAPI] public NochatPlayerApi currentPlayer { get; private set; }
+        [PublicAPI] public VRCPlayerApi currentPlayer { get; private set; }
+        [PublicAPI] public bool IsHeld => CoreIsHeld;
         // ReSharper restore InconsistentNaming
         
         public bool CoreIsHeld { get; private set; }
@@ -22,7 +23,7 @@ namespace NochatScript
         public void Core_SetIsHeldByLocalPlayer(bool isHeld)
         {
             CoreIsHeld = isHeld;
-            currentPlayer = NochatNetworking.LocalPlayer;
+            currentPlayer = Networking.LocalPlayer;
         }
 
         public enum PickupHand

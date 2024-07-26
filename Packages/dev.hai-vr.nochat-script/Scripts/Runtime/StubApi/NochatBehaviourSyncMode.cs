@@ -1,20 +1,27 @@
 ﻿using System;
 
-namespace NochatScript
+namespace UdonSharp
 {
-    public class NochatBehaviourSyncMode : Attribute
+    public class UdonBehaviourSyncMode : Attribute
     {
-        public NochatBehaviourSyncMode(NochatSyncMode syncMode)
+        public UdonBehaviourSyncMode(BehaviourSyncMode syncMode)
         {
             // TODO: Stub
         }
     }
 
-    public enum NochatSyncMode
+    public enum BehaviourSyncMode
     {
         // FIXME: Ordering
         None,
         NoVariableSync,
-        Manual
+        Manual,
+        Continuous
+    }
+
+    public enum UdonSyncMode
+    {
+        None,
+        Linear
     }
 }

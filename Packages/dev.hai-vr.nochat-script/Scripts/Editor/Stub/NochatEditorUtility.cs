@@ -1,11 +1,13 @@
-﻿namespace NochatScript.Editor
+﻿using UdonSharp;
+
+namespace UdonSharpEditor
 {
-    public static class NochatEditorUtility
+    public static class UdonSharpEditorUtility
     {
-        public static NochatBehaviour GetBackingNosharpBehaviour(object element)
+        public static UdonSharpBehaviour GetBackingUdonBehaviour(object element)
         {
             // TODO: Check this stub
-            if (element is NochatBehaviour behaviour)
+            if (element is UdonSharpBehaviour behaviour)
             {
                 return behaviour;
             }

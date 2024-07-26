@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
-namespace NochatScript
+namespace VRC.SDKBase
 {
-    public class NochatNetworking
+    public class Networking
     {
-        private static NochatPlayerApi _localPlayer = new NochatPlayerApi();
-        public static NochatPlayerApi LocalPlayer { get => _localPlayer; }
+        private static VRCPlayerApi _localPlayer = new VRCPlayerApi();
+        public static VRCPlayerApi LocalPlayer { get => _localPlayer; }
+        
+        private static bool _isClogged = false;
+        // ReSharper disable ConvertToAutoProperty
+        [PublicAPI] public static bool IsClogged { get => _isClogged; }
+        // ReSharper restore ConvertToAutoProperty
 
         public static int GetServerTimeInMilliseconds()
         {
@@ -19,21 +25,27 @@ namespace NochatScript
             return true;
         }
 
-        public static bool IsOwner(NochatPlayerApi player, GameObject networkedObject)
+        public static bool IsOwner(VRCPlayerApi player, GameObject networkedObject)
         {
             // TODO stub
             return true;
         }
 
-        public static NochatPlayerApi GetOwner(GameObject networkedObject)
+        public static VRCPlayerApi GetOwner(GameObject networkedObject)
         {
             // TODO stub
             return LocalPlayer;
         }
 
-        public static void SetOwner(NochatPlayerApi player, GameObject networkedObject)
+        public static void SetOwner(VRCPlayerApi player, GameObject networkedObject)
         {
             // TODO stub
+        }
+
+        public static double GetServerTimeInSeconds()
+        {
+            // TODO: Stub
+            return Time.time;
         }
     }
 }

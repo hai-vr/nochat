@@ -1,8 +1,17 @@
 ﻿using System;
 
-namespace NochatScript
+namespace UdonSharp
 {
-    public class NochatSynced : Attribute
+    public class UdonSynced : Attribute
     {
+        public UdonSynced()
+        {
+            // TODO: Stub
+        }
+        
+        public UdonSynced(UdonSyncMode mode)
+        {
+            // TODO: Stub
+        }
     }
 }
