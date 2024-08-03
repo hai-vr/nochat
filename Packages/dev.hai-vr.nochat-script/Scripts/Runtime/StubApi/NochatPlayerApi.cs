@@ -31,6 +31,7 @@ namespace VRC.SDKBase
         private static TrackingData _leftTrackingData;
         private static TrackingData _rightTrackingData;
         private Vector3 _velocity = Vector3.zero;
+        private static Animator _humanRef;
 
         public static VRCPlayerApi GetPlayerById(int allowedPlayer)
         {
@@ -79,9 +80,9 @@ namespace VRC.SDKBase
         public static void Nochat_ProvideForTrackingData(Transform viewpointRepresentation, Transform leftController, Transform rightController)
         {
             // TODO: Stub
-            _headTrackingData = new TrackingData(viewpointRepresentation.position, viewpointRepresentation.rotation);
-            _leftTrackingData = new TrackingData(leftController.position, leftController.rotation);
-            _rightTrackingData = new TrackingData(rightController.position, rightController.rotation);
+            if (viewpointRepresentation.position != Vector3.zero) _headTrackingData = new TrackingData(viewpointRepresentation.position, viewpointRepresentation.rotation);
+            if (leftController.position != Vector3.zero) _leftTrackingData = new TrackingData(leftController.position, leftController.rotation);
+            if (rightController.position != Vector3.zero)  _rightTrackingData = new TrackingData(rightController.position, rightController.rotation);
         }
 
         public TrackingData GetTrackingData(TrackingDataType which)
@@ -114,12 +115,32 @@ namespace VRC.SDKBase
 
         public Vector3 GetBonePosition(HumanBodyBones bone)
         {
+            if (_humanRef != null)
+            {
+                var boneTransform = _humanRef.GetBoneTransform(bone);
+                if (boneTransform != null)
+                {
+                    return boneTransform.position;
+                }
+                return Vector3.zero;
+            }
+            
             // FIXME: MEGA STUB
             return Camera.main.transform.position;
         }
 
         public Quaternion GetBoneRotation(HumanBodyBones bone)
         {
+            if (_humanRef != null)
+            {
+                var boneTransform = _humanRef.GetBoneTransform(bone);
+                if (boneTransform != null)
+                {
+                    return boneTransform.rotation;
+                }
+                return Quaternion.identity;
+            }
+            
             // FIXME: MEGA STUB
             return Camera.main.transform.rotation;
         }
@@ -175,6 +196,22 @@ namespace VRC.SDKBase
         public Vector3 GetVelocity()
         {
             return _velocity;
+        }
+
+        public static void Nochat_ProvideForHumanoidData(Animator realAnimator)
+        {
+            _humanRef = realAnimator;
+        }
+
+        public void TeleportTo(Vector3 pointPosition, object getRotation)
+        {
+            // FIXME: Not implemented
+        }
+
+        public object GetRotation()
+        {
+            // FIXME: Mega stub
+            return Quaternion.Euler(0, _headTrackingData.rotation.eulerAngles.y, 0);
         }
     }
 }

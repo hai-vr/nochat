@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using NochatScript.Core;
 using UnityEngine;
 using VRC.SDKBase;
+using VRC.Udon;
 using VRC.Udon.Common;
 using VRC.Udon.Common.Enums;
 using Object = UnityEngine.Object;
@@ -218,6 +219,8 @@ namespace UdonSharp
         public virtual void OnPreSerialization() { }
         public virtual void OnPlayerRespawn(VRCPlayerApi player) { }
         public virtual void OnPostSerialization(VRC.Udon.Common.SerializationResult result) { }
+        public virtual void OnDeserialization(DeserializationResult result) {}
+        public virtual void PostLateUpdate() {} // FIXME: Call PostLateUpdate
     }
 
     public class NochatPublicVarHolder
